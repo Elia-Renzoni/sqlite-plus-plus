@@ -1,2 +1,2 @@
-# sqlite-
+# sqlite++
 Yet another distributed SQLite version
