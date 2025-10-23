@@ -24,11 +24,11 @@ SQLite++ is an enhanced, distributed version of SQLite built in Python for both 
 * Transaction Manager: Handles distributed ACID transactions
 * Replication Layer: Ensures data redundancy across nodes
 
-### TODO
+## TODO
 - [ ] API
 - [ ] Cluster Manager
 - [ ] Leader Election
 - [ ] Failure Detection
 - [ ] Distributed Transactions
 
-### How to Run
+## How to Run
