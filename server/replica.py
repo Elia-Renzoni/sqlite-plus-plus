@@ -3,6 +3,7 @@ import socket
 import os
 import logging
 import actions
+import sys
 
 HOST = "127.0.0.1"
 PORT = 5050
@@ -67,5 +68,12 @@ def nack(conn, msg):
     conn.close()
 
 if __name__ == '__main__':
+    address = sys.argv[1]
+    seed_flag = sys.argv[2]
+
+    if seed_flag is True:
+        pass
+    else:
+        pass
     logging.info("SQLite++ is ON...")
     start()
