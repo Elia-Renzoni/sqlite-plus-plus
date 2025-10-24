@@ -1,5 +1,5 @@
 from enum import Enum
-import cluster.manager as coord
+import cluster.pgroup as pg
 import socket
 import json
 
@@ -20,7 +20,7 @@ def handle_join_cluster(req_data, secret):
          "msg": "request empty or corrupted"
       }
    
-   coord.append("cluster", address)
+   pg.add_node(address)
    return {
       "ok": True,
       "msg": "JOIN Approved"
@@ -28,7 +28,17 @@ def handle_join_cluster(req_data, secret):
    
 
 def handle_ping_message(req_data):
-   pass
+   ping = req_data['body']
+   if ping is not "ping":
+      return {
+         "ok": False,
+         "msg": "something went wrong with the body"
+      }
+   
+   return {
+      "ok": True,
+      "msg": "pong"
+   }
 
 def handle_sql_statement(req_data):
    pass
@@ -37,13 +47,13 @@ def handle_heartbeat(req_data):
    pass
 
 def perform_seed_registration(seed_addr):
-   success = coord.set("seed", seed_addr)
+   success = pg.register_seed(seed_addr)
    return success
 
 FAIR_LOSS_RETRIES = 3
 
 def perform_join_discovery_protocol(nodeAddress, secret):
-   seedAddress = coord.get("seed")
+   seedAddress = pg.retrieve_seed()
    if seedAddress is None:
       return
 

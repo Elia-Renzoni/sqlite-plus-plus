@@ -13,3 +13,12 @@ def delete():
 
 def append(id, value):
     return rdb.sadd(id, value)
+
+def fetch_all(id):
+    return rdb.smembers(id)
+
+def count_items(id):
+    return rdb.scard(id)
+
+def delete_item(id, value):
+    return rdb.srem(id, value)

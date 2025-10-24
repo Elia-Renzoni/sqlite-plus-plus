@@ -1,8 +1,19 @@
+import manager as coord
 
-import manager
+def add_node(address):
+    coord.append("cluster", address)
 
-def add_node():
-    pass
+def register_seed(address):
+    return coord.set("seed", address)
 
-def delete_node():
-    pass
+def retrieve_seed():
+    return coord.get("seed")
+
+def get_cluster_nodes():
+    return coord.fetch_all("cluster")
+
+def get_cluster_len():
+    return coord.count_items("cluster")
+
+def delete_node(peer):
+    return coord.delete_item("cluster", peer)
