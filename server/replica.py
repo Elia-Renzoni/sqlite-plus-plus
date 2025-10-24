@@ -4,6 +4,8 @@ import os
 import logging
 import actions
 import sys
+import cluster.failure_detector as fd
+import asyncio
 
 HOST = "127.0.0.1"
 PORT = 5050
@@ -85,4 +87,5 @@ if __name__ == '__main__':
             logging.info("Max retries reached for joining the cluster")
             sys.exit(1)
     logging.info("SQLite++ is ON...")
+    asyncio.run(fd.start_detection())
     start()

@@ -4,6 +4,7 @@ import time
 import socket
 import json
 import threading
+import asyncio
 
 net = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # the base timeout is set to 6s
@@ -13,9 +14,9 @@ net.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
 suspicious_nodes = set()
 mutex = threading.Lock
 
-def start_detection():
+async def start_detection():
     while True:
-        time.sleep(3)
+        await asyncio.sleep(3)
         items = pg.get_cluster_len()
         if items is 0:
             continue
