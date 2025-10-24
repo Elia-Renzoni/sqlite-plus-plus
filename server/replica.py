@@ -30,8 +30,7 @@ def handle_conn(conn, data):
         nack(conn, "Something went wrong while decoding the request")
         return
     
-    req_type = req['type']
-    match req_type:
+    match req['type']:
         case action.JOIN_CLUSTER:
             result = action.handle_join_cluster(req['body'])
         case action.PING:
@@ -40,6 +39,7 @@ def handle_conn(conn, data):
             result = action.handle_sql_statement(req['body'])
         case _:
             nack(conn, "Invalid data type")
+            return
 
     context = result.get('ok')
     message = result.get('msg')
