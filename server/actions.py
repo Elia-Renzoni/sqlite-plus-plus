@@ -14,3 +14,6 @@ def handle_ping_message(req_data):
 
 def handle_sql_statement(req_data):
    pass
+
+def handle_heartbeat(req_data):
+   pass

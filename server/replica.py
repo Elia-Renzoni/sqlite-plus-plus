@@ -37,6 +37,8 @@ def handle_conn(conn, data):
             result = action.handle_ping_message(req['body'])
         case action.SQL_STMT:
             result = action.handle_sql_statement(req['body'])
+        case action.HEARTBEAT:
+            result = action.handle_heartbeat(req['body'])
         case _:
             nack(conn, "Invalid data type")
             return
