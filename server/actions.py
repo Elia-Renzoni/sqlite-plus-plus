@@ -22,8 +22,8 @@ def handle_join_cluster(req_data, secret):
    
    coord.append("cluster", address)
    return {
-      "ok":True,
-      "msg":"JOIN Approved"
+      "ok": True,
+      "msg": "JOIN Approved"
    }
    
 
