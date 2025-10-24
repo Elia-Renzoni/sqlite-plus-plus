@@ -70,11 +70,16 @@ def nack(conn, msg):
 if __name__ == '__main__':
     address = sys.argv[1]
     seed_flag = sys.argv[2]
+    secret = sys.argv[3]
+
+    if secret is None and seed_flag is False:
+        logging.error("Set a secret for join the cluster")
+        sys.exit(1)
 
     if seed_flag is True:
         actions.perform_seed_registration(address)
     else:
-        retries = actions.perform_join_discovery_protocol(address)
+        retries = actions.perform_join_discovery_protocol(address, secret)
         if retries > actions.FAIR_LOSS_RETRIES:
             logging.info("Max retries reached for joining the cluster")
             sys.exit(1)
