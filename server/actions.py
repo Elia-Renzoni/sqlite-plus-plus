@@ -10,8 +10,22 @@ class Action(Enum):
    HEARTBEAT = 4
    DISCOVERY = 5
 
-def handle_join_cluster(req_data):
-   pass
+def handle_join_cluster(req_data, secret):
+   address = req_data['body']
+   secretKey = req_data['key']
+
+   if address is None and secretKey is not secret:
+      return {
+         "ok": False,
+         "msg": "request empty or corrupted"
+      }
+   
+   coord.append("cluster", address)
+   return {
+      "ok":True,
+      "msg":"JOIN Approved"
+   }
+   
 
 def handle_ping_message(req_data):
    pass

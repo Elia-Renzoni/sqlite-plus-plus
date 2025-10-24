@@ -10,3 +10,6 @@ def get(key):
 
 def delete():
     pass
+
+def append(id, value):
+    return rdb.sadd(id, value)

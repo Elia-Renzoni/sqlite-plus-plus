@@ -14,6 +14,7 @@ listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 listener.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024 * 1024)
 listener.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024 * 1024)
 action = actions.Action()
+secret = None
 
 def start():
     listener.bind((HOST, PORT))
@@ -33,13 +34,13 @@ def handle_conn(conn, data):
     
     match req['type']:
         case action.JOIN_CLUSTER:
-            result = action.handle_join_cluster(req['body'])
+            result = action.handle_join_cluster(req, secret)
         case action.PING:
-            result = action.handle_ping_message(req['body'])
+            result = action.handle_ping_message(req)
         case action.SQL_STMT:
-            result = action.handle_sql_statement(req['body'])
+            result = action.handle_sql_statement(req)
         case action.HEARTBEAT:
-            result = action.handle_heartbeat(req['body'])
+            result = action.handle_heartbeat(req)
         case _:
             nack(conn, "Invalid data type")
             return
