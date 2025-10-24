@@ -1,6 +1,7 @@
 from enum import Enum
 import cluster.manager as coord
 import socket
+import json
 
 class Action(Enum):
    JOIN_CLUSTER = 1
@@ -23,8 +24,37 @@ def handle_heartbeat(req_data):
 
 def perform_seed_registration(seed_addr):
    success = coord.set("seed", seed_addr)
-   
-   
+   return success
 
-def perform_join_discovery_protocol():
-   pass
+FAIR_LOSS_RETRIES = 3
+
+def perform_join_discovery_protocol(nodeAddress, secret):
+   seedAddress = coord.get("seed")
+   if seedAddress is None:
+      return
+
+   # dial the seed node and starts a two-way handshake
+   net = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   net.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+   net.settimeout(3.0)
+
+   retry = 0
+   while retry < FAIR_LOSS_RETRIES:
+      net.connect(seedAddress)
+
+      net.send(json.dumps(make_join_message(nodeAddress, secret)))
+      data = net.recv(5048)
+      res = json.load(data)
+      status_code = res['status']
+      if status_code is 200:
+         net.close()
+         break
+      retry += 1
+   return retry 
+
+def make_join_message(nodeAddress, secret): 
+   return {
+      "type": 1,
+      "body": nodeAddress,
+      "key": secret 
+   }

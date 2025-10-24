@@ -72,8 +72,11 @@ if __name__ == '__main__':
     seed_flag = sys.argv[2]
 
     if seed_flag is True:
-        pass
+        actions.perform_seed_registration(address)
     else:
-        pass
+        retries = actions.perform_join_discovery_protocol(address)
+        if retries > actions.FAIR_LOSS_RETRIES:
+            logging.info("Max retries reached for joining the cluster")
+            sys.exit(1)
     logging.info("SQLite++ is ON...")
     start()
