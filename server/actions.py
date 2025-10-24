@@ -4,6 +4,7 @@ class Action(Enum):
    JOIN_CLUSTER = 1
    PING = 2
    SQL_STMT = 3 
+   HEARTBEAT = 4
 
 
 def handle_join_cluster(req_data):
