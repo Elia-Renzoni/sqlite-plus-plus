@@ -17,6 +17,9 @@ class ElectionTerm:
             self.term = remote_leader_term
 
 
+term_manager = ElectionTerm()
+
+
 def start_leader_election():
     pass
 
