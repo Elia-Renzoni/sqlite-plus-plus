@@ -33,5 +33,14 @@ def propose_vote(tcp_address):
     if leader_is_me:
         term_manager.new_term()
 
+def check_leader_validity(leader_term):
+    leader_validity_flag = True
+    try:
+        term_manager.compare_terms(leader_term)
+    except:
+        leader_validity_flag = False
+    
+    return leader_validity_flag
+
 async def wait_for_heartbeat():
     pass

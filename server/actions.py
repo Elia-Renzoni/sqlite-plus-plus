@@ -1,5 +1,6 @@
 from enum import Enum
 import cluster.pgroup as pg
+import cluster.leader_election as le
 import socket
 import json
 
@@ -44,7 +45,18 @@ def handle_sql_statement(req_data):
    pass
 
 def handle_heartbeat(req_data):
-   pass
+   leader_term = req_data['body']
+   result = le.check_leader_validity(leader_term)
+   if result:
+      return {
+         "ok": True,
+         "msg": "heartbeat arrived, leader is healty"
+      }
+   
+   return {
+      "ok": False,
+      "msg": "Split Brain, shutdown old leader"
+   }
 
 def perform_seed_registration(seed_addr):
    success = pg.register_seed(seed_addr)
