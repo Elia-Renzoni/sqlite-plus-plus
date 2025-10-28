@@ -15,19 +15,23 @@ class ElectionTerm:
         # merge the term 
         if remote_leader_term > self.term:
             self.term = remote_leader_term
+    
+    def get_term(self):
+        return self.term
 
 term_manager = ElectionTerm()
 leader_is_me = None
 
 def try_fetch_leader(tcp_address):
     leader = coord.get("leader")
-    if leader is not None:
-        return
-    propose_vote(tcp_address)
+    if leader is None:
+        propose_vote(tcp_address)
 
 def propose_vote(tcp_address):
     success = coord.set("leader", tcp_address)
     leader_is_me = success
+    if leader_is_me:
+        term_manager.new_term()
 
 async def wait_for_heartbeat():
     pass
