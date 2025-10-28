@@ -19,11 +19,11 @@ class ElectionTerm:
 term_manager = ElectionTerm()
 leader_is_me = None
 
-def try_fetch_leader(tcpAddress):
+def try_fetch_leader(tcp_address):
     leader = coord.get("leader")
     if leader is not None:
         return
-    propose_vote()
+    propose_vote(tcp_address)
 
 def propose_vote(tcp_address):
     success = coord.set("leader", tcp_address)
