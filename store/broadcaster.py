@@ -76,10 +76,19 @@ def forward_decision(decision_message):
         ch.close()
 
 def make_transaction_message(txn):
-    pass
+    return {
+            "type": 5,
+            "body": txn
+    }
 
 def make_commit_message():
-    pass
+    return {
+            "type": 5,
+            "body": "commit"
+    }
 
 def make_rollback_message():
-    pass
+    return {
+            "type": 5
+            "body": "rollback"
+    }
