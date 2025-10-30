@@ -47,7 +47,7 @@ def broadcast_transaction(nodes):
             txn_exec_results.add(Result(res, net))
         t = threading.Thread(target=do_send(txn, node))
         t.start()
-        t.join()
+    t.join()
     decision = take_decision()
     if decision is "commit":
         forward_decision(make_commit_message())
