@@ -41,7 +41,3 @@ def check_leader_validity(leader_term):
         leader_validity_flag = False
     
     return leader_validity_flag
-
-# TODO
-async def wait_for_heartbeat():
-    pass
