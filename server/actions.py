@@ -59,8 +59,7 @@ def handle_heartbeat(req_data):
    }
 
 def perform_seed_registration(seed_addr):
-   success = pg.register_seed(seed_addr)
-   return success
+    return pg.register_seed(seed_addr)
 
 FAIR_LOSS_RETRIES = 3
 
