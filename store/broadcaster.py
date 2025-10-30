@@ -7,6 +7,7 @@ txn_queue = list()
 db = db_api.Storage()
 latest_txn = 0
 txn_exec_results = list()
+mutex = threading.Lock
 
 class Result:
     def __init__(self, res, conn):
@@ -44,7 +45,13 @@ def broadcast_transaction(nodes):
 
             data = net.recv(5048)
             res = json.load(data)
-            txn_exec_results.add(Result(res, net))
+            try:
+                mutex.acquire()
+                txn_exec_results.add(Result(res, net))
+            except:
+                pass
+            finally:
+                mutex.release()
         t = threading.Thread(target=do_send(txn, node))
         t.start()
     t.join()
