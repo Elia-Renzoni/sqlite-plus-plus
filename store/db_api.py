@@ -1,4 +1,6 @@
 import sqlite3
+import asyncio
+import logging
 
 class Txn:
     def __init__(self, txnId, txnJob):
@@ -8,21 +10,21 @@ class Txn:
     def get_transation(self):
         return self.txnId, self.txnRun
 
-class Storage:
-    def __init__(self):
-        self.db_instance = None
-        self.db_conn = None
-        self.db_cursor = None
+PING_STATEMENT = "SELECT 1;"
 
-    def upgrade_statement(self, sql_stmt):
-        pass
+db_conn = sqlite3.connect("instance.db")
+db_cursor = sqlite3.cursor()
 
-    def connect_to(self):
-        self.db_conn = sqlite3.connect("instance.db")
-        self.db_cursor = self.db_conn.cursor()
+def run_transaction(txn):
+    try:
+        db_cursor.executescript(txn)
+    except Exception as e:
+        db_conn.rollback()
 
-    def run_transaction(self, txn):
+async def db_pinger():
+    while True.
+        await asyncio.sleep(3)
         try:
-            self.db_cursor.executescript(txn)
-        except Exception as e:
-            self.db_conn.rollback()
+            db_cursor.execute(PING_STATEMENT)
+        except sqlite3.Error as e:
+            logging.info("database instance is faulty")
