@@ -17,3 +17,9 @@ def get_cluster_len():
 
 def delete_node(peer):
     return coord.delete_item("cluster", peer)
+
+def search_leader():
+    return coord.get("leader")
+
+def propose_vote(addr):
+    return coord.set("leader", addr)

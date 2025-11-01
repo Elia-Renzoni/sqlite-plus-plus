@@ -1,4 +1,5 @@
 import manager as coord
+import pgroup as pg
 
 class ElectionTerm:
     def __init__(self):
@@ -23,15 +24,15 @@ term_manager = ElectionTerm()
 leader_is_me = None
 
 def fetch_leader():
-    return coord.get("leader")
+    return pg.search_leader()
 
 def try_fetch_leader(tcp_address):
-    leader = coord.get("leader")
+    leader = pg.search_leader()
     if leader is None:
         propose_vote(tcp_address)
 
 def propose_vote(tcp_address):
-    success = coord.set("leader", tcp_address)
+    success = pg.propose_vote(tcp_address)
     leader_is_me = success
     if leader_is_me:
         term_manager.new_term()
