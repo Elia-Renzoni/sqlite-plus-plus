@@ -1,5 +1,6 @@
 from enum import Enum
 import cluster.pgroup as pg
+import store.db_api as db
 import cluster.leader_election as le
 import socket
 import json
@@ -44,6 +45,7 @@ def handle_ping_message(req_data):
 def handle_sql_statement(req_data):
    leader_addr = req_data['leader']
    leader_term = req_data['term']
+   txn = req_data['body']
    address = le.fetch_leader()
    if leader_addr is None and leader_term is None:
        return {
@@ -61,6 +63,7 @@ def handle_sql_statement(req_data):
     status = le.fetch_leader_status()
     if status is not True:
         # TODO-> handle db connection and send back the result
+        db.run_transaction(txn)
         pass
 
     # TODO-> broadcast the message and take a decision

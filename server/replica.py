@@ -6,6 +6,7 @@ import actions
 import sys
 import cluster.failure_detector as fd
 import cluster.leader_election as le
+import store.db_api as db
 import asyncio
 
 HOST = "127.0.0.1"
@@ -89,5 +90,6 @@ if __name__ == '__main__':
             sys.exit(1)
     logging.info("SQLite++ is ON...")
     asyncio.run(fd.start_detection())
+    asynctio.run(db.db_pinger())
     le.try_fetch_leader(address) 
     start()
