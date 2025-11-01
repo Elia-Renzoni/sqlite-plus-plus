@@ -42,7 +42,29 @@ def handle_ping_message(req_data):
    }
 
 def handle_sql_statement(req_data):
-   pass
+   leader_addr = req_data['leader']
+   leader_term = req_data['term']
+   address = le.fetch_leader()
+   if leader_addr is None and leader_term is None:
+       return {
+               "ok": False,
+               "msg": "the statement must be sent to the leader address at: " + address
+       }
+
+    result = le.check_leader_validity(leader_term)
+    if result is not True:
+        return {
+                "ok": False,
+                "msg": "Split Brain, shutdown old leader"
+        }
+
+    status = le.fetch_leader_status()
+    if status is not True:
+        # TODO-> handle db connection and send back the result
+        pass
+
+    # TODO-> broadcast the message and take a decision
+ 
 
 def handle_heartbeat(req_data):
    leader_term = req_data['body']

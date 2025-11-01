@@ -22,6 +22,9 @@ class ElectionTerm:
 term_manager = ElectionTerm()
 leader_is_me = None
 
+def fetch_leader():
+    return coord.get("leader")
+
 def try_fetch_leader(tcp_address):
     leader = coord.get("leader")
     if leader is None:
@@ -32,6 +35,12 @@ def propose_vote(tcp_address):
     leader_is_me = success
     if leader_is_me:
         term_manager.new_term()
+
+def change_status_as_peer():
+    leader_is_me = False
+
+def fetch_leader_status():
+    return leader_is_me
 
 def check_leader_validity(leader_term):
     leader_validity_flag = True
