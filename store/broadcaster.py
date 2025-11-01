@@ -88,6 +88,6 @@ def make_commit_message():
 
 def make_rollback_message():
     return {
-            "type": 5
+            "type": 5,
             "body": "rollback"
     }
