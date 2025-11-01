@@ -1,4 +1,3 @@
-import manager as coord
 import pgroup as pg
 
 class ElectionTerm:
