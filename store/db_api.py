@@ -13,16 +13,17 @@ class Txn:
 PING_STATEMENT = "SELECT 1;"
 
 db_conn = sqlite3.connect("instance.db")
-db_cursor = sqlite3.cursor()
+db_cursor = db_conn.cursor()
 
 def run_transaction(txn):
     try:
         db_cursor.executescript(txn)
+        db_conn.commit()
     except Exception as e:
         db_conn.rollback()
 
 async def db_pinger():
-    while True.
+    while True:
         await asyncio.sleep(3)
         try:
             db_cursor.execute(PING_STATEMENT)
