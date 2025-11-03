@@ -62,9 +62,16 @@ def handle_sql_statement(req_data):
 
     status = le.fetch_leader_status()
     if status is not True:
-        # TODO-> handle db connection and send back the result
-        db.run_transaction(txn)
-        pass
+        txn_status_result = db.run_transaction(txn)
+        if txn_status_result is "commit":
+            return {
+                    "ok": True,
+                    "msg": txn_status_result
+            }
+        return {
+                "ok": False,
+                "msg": txn_status_result
+        }
 
     # TODO-> broadcast the message and take a decision
  
