@@ -16,11 +16,15 @@ db_conn = sqlite3.connect("instance.db")
 db_cursor = db_conn.cursor()
 
 def run_transaction(txn):
+    execution_status = "commit"
     try:
         db_cursor.executescript(txn)
         db_conn.commit()
     except Exception as e:
         db_conn.rollback()
+        execution_status = "rollback"
+
+    return execution_status
 
 async def db_pinger():
     while True:
