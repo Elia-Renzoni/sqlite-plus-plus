@@ -4,7 +4,6 @@ import threading
 import json
 
 txn_queue = list()
-db = db_api.Storage()
 latest_txn = 0
 txn_exec_results = list()
 mutex = threading.Lock
