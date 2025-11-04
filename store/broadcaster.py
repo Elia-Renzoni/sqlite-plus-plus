@@ -20,7 +20,7 @@ class Result:
         return self.socket_channel
 
 # TODO -> this function is useful only if the process
-# run in a mutlithreaded environment, in case of a single thread
+# run in a multithreaded environment, in case of a single thread
 # environment the function can be crossed.
 def create_and_push_txn(sql_stmt):
     txn = db_api.upgrade_statement(sql_stmt)
