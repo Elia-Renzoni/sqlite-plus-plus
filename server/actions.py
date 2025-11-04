@@ -17,7 +17,7 @@ def handle_join_cluster(req_data, secret):
    address = req_data['body']
    secretKey = req_data['key']
 
-   if address is None and secretKey is not secret:
+   if address == None and secretKey != secret:
       return {
          "ok": False,
          "msg": "request empty or corrupted"
@@ -32,7 +32,7 @@ def handle_join_cluster(req_data, secret):
 
 def handle_ping_message(req_data):
    ping = req_data['body']
-   if ping is not "ping":
+   if ping != "ping":
       return {
          "ok": False,
          "msg": "something went wrong with the body"
@@ -48,45 +48,42 @@ def handle_sql_statement(req_data):
    leader_term = req_data['term']
    txn = req_data['body']
    address = le.fetch_leader()
-   if leader_addr is None and leader_term is None:
+   if leader_addr == None and leader_term == None:
        return {
                "ok": False,
                "msg": "the statement must be sent to the leader address at: " + address
        }
-
-    result = le.check_leader_validity(leader_term)
-    if result is not True:
-        return {
+   result = le.check_leader_validity(leader_term)
+   if result is not True:
+       return {
                 "ok": False,
                 "msg": "Split Brain, shutdown old leader"
         }
-
-    status = le.fetch_leader_status()
-    if status is not True:
-        txn_status_result = db.run_transaction(txn)
-        if txn_status_result is "commit":
-            return {
-                    "ok": True,
-                    "msg": txn_status_result
-            }
-        return {
-                "ok": False,
-                "msg": txn_status_result
-        }
-
-    br.create_and_push_txn(txn)
-    peers = pg.get_cluster_nodes()
-    decision = br.broadcast_transaction(peers)
-    if decision is "commit":
+   status = le.fetch_leader_status()
+   if status is not True:
+       txn_status_result = db.run_transaction(txn)
+       if txn_status_result == "commit":
+           return {
+                   "ok": True,
+                   "msg": txn_status_result
+           }
+       return {
+               "ok": False,
+               "msg": txn_status_result
+       }
+   br.create_and_push_txn(txn)
+   peers = pg.get_cluster_nodes()
+   decision = br.broadcast_transaction(peers)
+   if decision == "commit":
         return {
                 "ok": True,
                 "msg": decision
         }
 
-    return {
+   return {
             "ok": False,
             "msg": decision
-    }
+   }
  
 
 def handle_heartbeat(req_data):
@@ -126,7 +123,7 @@ def perform_join_discovery_protocol(nodeAddress, secret):
       data = net.recv(5048)
       res = json.load(data)
       status_code = res['status']
-      if status_code is 200:
+      if status_code == 200:
          net.close()
          break
       retry += 1
