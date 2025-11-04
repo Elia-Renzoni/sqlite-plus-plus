@@ -48,7 +48,9 @@ def broadcast_transaction(nodes):
         t = threading.Thread(target=do_send(txn, node))
         t.start()
     t.join()
-    decision = take_decision()
+
+    leader_result = db_api.run_transaction(txn)
+    decision = take_decision(leader_result)
     if decision is "commit":
         forward_decision(make_commit_message())
         return decision
@@ -56,7 +58,10 @@ def broadcast_transaction(nodes):
     forward_decision(make_rollback_message())
     return decision
 
-def take_decision():
+def take_decision(leader_result):
+    if leader_result is "rollback":
+        return "rollback"
+
     for txn_result in txn_exec_results:
         if txn_result.get_txn_exec_result() is "rollback":
             return "rollback"
