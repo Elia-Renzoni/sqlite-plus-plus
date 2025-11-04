@@ -74,10 +74,19 @@ def handle_sql_statement(req_data):
                 "msg": txn_status_result
         }
 
-    # TODO -> handle return statement after calling broadcast_transaction
     br.create_and_push_txn(txn)
     peers = pg.get_cluster_nodes()
-    br.broadcast_transaction(peers)
+    decision = br.broadcast_transaction(peers)
+    if decision is "commit":
+        return {
+                "ok": True,
+                "msg": decision
+        }
+
+    return {
+            "ok": False,
+            "msg": decision
+    }
  
 
 def handle_heartbeat(req_data):
