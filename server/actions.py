@@ -1,6 +1,7 @@
 from enum import Enum
 import cluster.pgroup as pg
 import store.db_api as db
+import store.broadcaster as br
 import cluster.leader_election as le
 import socket
 import json
@@ -73,7 +74,10 @@ def handle_sql_statement(req_data):
                 "msg": txn_status_result
         }
 
-    # TODO-> broadcast the message and take a decision
+    # TODO -> handle return statement after calling broadcast_transaction
+    br.create_and_push_txn(txn)
+    peers = pg.get_cluster_nodes()
+    br.broadcast_transaction(peers)
  
 
 def handle_heartbeat(req_data):
