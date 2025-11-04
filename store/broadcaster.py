@@ -2,6 +2,7 @@ import db_api
 import socket
 import threading
 import json
+import cluster.leader_election as le
 
 txn_queue = list()
 latest_txn = 0
@@ -79,6 +80,7 @@ def forward_decision(decision_message):
 def make_transaction_message(txn):
     return {
             "type": 5,
+            "term": le.term_manager.get_term(),
             "body": txn
     }
 
