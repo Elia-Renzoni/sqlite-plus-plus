@@ -23,7 +23,6 @@ class Result:
 # run in a multithreaded environment, in case of a single thread
 # environment the function can be crossed.
 def create_and_push_txn(sql_stmt):
-    txn = db_api.upgrade_statement(sql_stmt)
     txn_task = db_api.Txn(latest_txn + 1, txn)
     latest_txn += 1
     txn_queue.push(txn_task)
