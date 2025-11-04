@@ -25,11 +25,6 @@ def create_and_push_txn(sql_stmt):
     latest_txn += 1
     txn_queue.push(txn_task)
 
-def select_txn():
-    txn = txn_queue.get(0)
-    _, txn_body = txn.get_transaction()
-    db.run_transaction(txn_body)
-
 net = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 net.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
 net.settimout(3.0)
