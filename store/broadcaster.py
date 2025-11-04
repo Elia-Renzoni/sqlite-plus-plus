@@ -51,9 +51,10 @@ def broadcast_transaction(nodes):
     decision = take_decision()
     if decision is "commit":
         forward_decision(make_commit_message())
-        return
+        return decision
 
     forward_decision(make_rollback_message())
+    return decision
 
 def take_decision():
     for txn_result in txn_exec_results:
