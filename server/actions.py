@@ -1,6 +1,6 @@
 from enum import Enum
-import cluster.pgroup as pg
 import store.db_api as db
+import cluster.pgroup as pg
 import store.broadcaster as br
 import cluster.leader_election as le
 import socket
@@ -103,6 +103,9 @@ def handle_heartbeat(req_data):
 def perform_seed_registration(seed_addr):
     return pg.register_seed(seed_addr)
 
+# the link is based on a fair loss abstraction,
+# build on top of exactly-one delivery guaratees
+# provided by Redis
 FAIR_LOSS_RETRIES = 3
 
 def perform_join_discovery_protocol(nodeAddress, secret):
