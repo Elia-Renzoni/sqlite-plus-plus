@@ -1,5 +1,5 @@
-import manager as coord
-import pgroup as pg
+from . import manager as coord
+from . import pgroup as pg
 import time
 import socket
 import json

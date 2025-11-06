@@ -1,4 +1,4 @@
-import pgroup as pg
+from . import pgroup as pg
 
 class ElectionTerm:
     def __init__(self):

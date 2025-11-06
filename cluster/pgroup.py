@@ -1,4 +1,4 @@
-import manager as coord
+from . import manager as coord
 
 def add_node(address):
     coord.append("cluster", address)
