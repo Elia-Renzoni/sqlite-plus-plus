@@ -54,7 +54,7 @@ def broadcast_transaction(nodes):
 
     leader_result = db_api.run_transaction(txn)
     decision = take_decision(leader_result)
-    if decision is "commit":
+    if decision == "commit":
         forward_decision(make_commit_message())
         return decision
 
@@ -62,7 +62,7 @@ def broadcast_transaction(nodes):
     return decision
 
 def take_decision(leader_result):
-    if leader_result is "rollback":
+    if leader_result == "rollback":
         return "rollback"
 
     for txn_result in txn_exec_results:
