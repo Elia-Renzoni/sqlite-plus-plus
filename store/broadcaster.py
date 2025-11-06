@@ -1,4 +1,4 @@
-import db_api
+from . import db_api
 import socket
 import threading
 import json
