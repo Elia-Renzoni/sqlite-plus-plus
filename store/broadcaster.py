@@ -66,7 +66,7 @@ def take_decision(leader_result):
         return "rollback"
 
     for txn_result in txn_exec_results:
-        if txn_result.get_txn_exec_result() is "rollback":
+        if txn_result.get_txn_exec_result() == "rollback":
             return "rollback"
 
     return "commit"
